@@ -60,6 +60,10 @@ Create one user each for the three personas with `az ad user create`, then look 
 .\scripts\01-get-object-ids.ps1
 ```
 
+In Microsoft Entra ID, the Lab SysAdmin, Lab SupportTech and Lab Auditor users should appear as members:
+
+<img width="986" height="226" alt="Entra ID user list" src="https://github.com/user-attachments/assets/1c7822fa-f5f8-41db-9686-14574eaa4ff0" />
+
 ## Step 2: Configure Variables
 
 ```powershell
@@ -80,6 +84,14 @@ terraform apply
 
 If the plan shows more than 3 resources, `resource_group_name` or `vm_name` does not match Part 1. The names are case-sensitive. If validation fails right after apply, wait a few minutes for RBAC to propagate and run it again.
 
+To see the live assignments yourself, list them at the FS01 scope. You should see Owner, Virtual Machine Contributor and Reader, all on FS01 only:
+
+```powershell
+az role assignment list --scope $vm -o table
+```
+
+<img width="965" height="259" alt="az roles assignment list scope" src="https://github.com/user-attachments/assets/2e4d5b9f-5829-44a6-9244-203b29c7f9fe" />
+
 ## Step 4: Test Each Persona
 
 Use a new terminal for each user, and sign in with `az login --allow-no-subscriptions`. Check who you are with `az account show --query user.name -o tsv` before each test.
@@ -96,7 +108,11 @@ $vm = (terraform output -raw vm_id)
 | SupportTech (VM Contributor) | Create a role assignment | Denied (AuthorizationFailed) |
 | SysAdmin (Owner) | View the VM and list or manage role assignments | Allowed |
 
-The denied actions are the proof that least privilege is enforced. Sign back in with your own account when you finish.
+The denied actions are the proof that least privilege is enforced. For example, SupportTech is refused when trying to create a role assignment:
+
+<img width="939" height="252" alt="AZ role assignment create as supptech" src="https://github.com/user-attachments/assets/7c0e875b-7b2f-44b7-85f2-8af14fc4ebc1" />
+
+Sign back in with your own account when you finish.
 
 > **Reading versus writing:** the Virtual Machine Contributor and Reader roles can both list role assignments, because they include read access to `Microsoft.Authorization`. What they cannot do is create or change assignments. Test the write action, not the read.
 
