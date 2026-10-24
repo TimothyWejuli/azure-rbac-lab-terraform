@@ -1,0 +1,8 @@
+resource_group_name    = "RG-FileServerLab"   # case-sensitive, must match the NTFS lab
+vm_name                = "FS01"               # case-sensitive, must match the NTFS lab
+location               = "Central US"
+
+# Object IDs for your three test users (see scripts/01-get-object-ids.ps1)
+sysadmin_object_id     = "REPLACE_WITH_SYSADMIN_OBJECT_ID"
+support_user_object_id = "REPLACE_WITH_SUPPORTTECH_OBJECT_ID"
+auditor_object_id      = "REPLACE_WITH_AUDITOR_OBJECT_ID"
