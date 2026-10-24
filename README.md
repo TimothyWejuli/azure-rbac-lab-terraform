@@ -42,6 +42,10 @@ Check the VMs first:
 az vm list -g RG-FileServerLab --query "[].{name:name,status:powerState}" -o table
 ```
 
+In the Azure portal, all three VMs from Part 1 should appear in `RG-FileServerLab`:
+
+<img width="693" height="169" alt="Azure portal VM List" src="https://github.com/user-attachments/assets/df4e61db-96be-45a2-9612-9155a051b449" />
+
 > **MFA:** if your tenant uses Security Defaults, the test users will be asked to register an authenticator app at first sign-in.
 
 ## Step 1: Create the Test Users
